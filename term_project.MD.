@@ -1,14 +1,17 @@
 import requests
-url = 'https://www.nytimes.com/section/science'
+url = 'https://comic.naver.com/webtoon/weekday.nhn'
 r = requests.get(url)
-r.endcoding='utf8'
-data = str(r.text)
-begin =data.find('How to Land on Mars')
-end=data.rfind('Monsters That Live On You')
+r.encoding='utf8'
+html = r.text
+begin=html.find('<h4 class="mon"><span>월요 웹툰')
+end=html.find('(재)">킬러분식 (재)</a>')
 
-data=data[begin:end]
-data=data.replace('<p',' ')
-data=data.replace('</p>',' ')
+html=html[begin:end]
+html=html.replace('<p',' ')
+html=html.replace('</p>',' ')
 
-print(data)
-
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(html, 'html.parser')
+for title in soup.select('div[class=title]'):
+    prin(title)
+print(soup)
