@@ -1,10 +1,11 @@
 import requests
-url = 'https://comic.naver.com/webtoon/weekday.nhn'
-r = requests.get(url)
+import re
+url ='https://comic.naver.com/webtoon/weekday.nhn'
+r= requests.get(url)
 r.encoding='utf8'
 html = r.text
 begin=html.find('<h4 class="mon"><span>월요 웹툰')
-end=html.find('(재)">킬러분식 (재)</a>')
+end=html.rfind('호곡') +len('호곡')
 
 html=html[begin:end]
 html=html.replace('<p',' ')
@@ -12,6 +13,21 @@ html=html.replace('</p>',' ')
 
 from bs4 import BeautifulSoup
 soup = BeautifulSoup(html, 'html.parser')
-for title in soup.select('div[class=title]'):
-    prin(title)
-print(soup)
+#for title in soup.select('div[class=title]'):
+#   print(' ')
+html=soup.text
+html=html.replace('\n','/')
+
+line=[]
+while(1) :
+    if html.find("웹툰")!=-1:
+        start=html.find("웹툰")-3
+        end=html[start+7:].find("웹툰")-3
+        line.append(html[start:end])
+
+        html=html[end:]
+    else:
+        break
+for i in range(len(line)):
+    print(line[i],"\n")
+#print(soup)
