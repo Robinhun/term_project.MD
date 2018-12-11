@@ -1,18 +1,18 @@
 import requests
 import re
-url ='https://comic.naver.com/webtoon/weekday.nhn'
+url ='https://comic.naver.com/webtoon/weekday.nhn'  # requests를 사용해서 불러오고자 하는 사이트를 url로 저장해서 불러온다.
 r= requests.get(url)
-r.encoding='utf8'
-html = r.text
-begin=html.find('<h4 class="mon"><span>월요 웹툰')
-end=html.rfind('호곡') +len('호곡')
+r.encoding='utf8'                                    
+html = r.text 
+begin=html.find('<h4 class="mon"><span>월요 웹툰')   # 텍스트 중에서 각 요일 별 웹툰의 제목만 추출하기 위해서 시작을 '월요 웹툰'으로 설정한다. 
+end=html.rfind('호곡') +len('호곡')                  # 일요일 웹툰 제목까지 추출을 끝내기 위해서 '호곡'으로 끝낸다
 
 html=html[begin:end]
 html=html.replace('<p',' ')
 html=html.replace('</p>',' ')
 
-from bs4 import BeautifulSoup
-soup = BeautifulSoup(html, 'html.parser')
+from bs4 import BeautifulSoup                       #html 파일에서 데이터를 읽어내는 파이썬 라이브러리를 사용해서 
+soup = BeautifulSoup(html, 'html.parser')           파싱을 이용하기 위해서 BeautifulSoup 사용함
 #for title in soup.select('div[class=title]'):
 #   print(' ')
 html=soup.text
